@@ -8,7 +8,6 @@ on:
 jobs:
   iOS:
     runs-on: macos-latest
-    if: "false"
     defaults:
       run:
         working-directory: build
@@ -34,6 +33,7 @@ jobs:
 
   Android:
     runs-on: macos-latest
+    if: "false"
     defaults:
       run:
         working-directory: build
