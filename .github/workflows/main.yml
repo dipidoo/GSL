@@ -6,6 +6,24 @@ on:
     branches: [ master ]
 
 jobs:
+  iOS:
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: build
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Create build directory
+        run: mkdir -p build
+        working-directory: .
+
+      - name: Configure
+        run: cmake -GXcode -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_ARCHITECTURES=x86_64 -DCMAKE_OSX_DEPLOYMENT_TARGET=8 ..
+
+      - name: Build
+        run: cmake --build . --parallel -- -sdk iphonesimulator
+
   Android:
     runs-on: macos-latest
     defaults:
@@ -44,7 +62,7 @@ jobs:
     - name: Deploy tests
       run: |
         adb push tests /data/local/tmp
-        adb shell find /data/local/tmp/tests -maxdepth 1 -exec chmod +x {} \;
+        adb shell find /data/local/tmp/tests -maxdepth 1 -exec chmod +x {} \\\;
 
     - name: Test
-      run: adb shell find /data/local/tmp/tests -name "*_tests" -maxdepth 1 -exec {} \;
+      run: adb shell find /data/local/tmp/tests -name "*_tests" -maxdepth 1 -exec {} \\\;
