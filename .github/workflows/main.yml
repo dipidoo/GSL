@@ -8,6 +8,7 @@ on:
 jobs:
   iOS:
     runs-on: macos-latest
+    if: "false"
     defaults:
       run:
         working-directory: build
@@ -19,7 +20,14 @@ jobs:
         working-directory: .
 
       - name: Configure
-        run: cmake -GXcode -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_ARCHITECTURES=x86_64 -DCMAKE_OSX_DEPLOYMENT_TARGET=8 -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY ..
+        run: |
+          cmake \
+            -GXcode \
+            -DCMAKE_SYSTEM_NAME=iOS \
+            "-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64" \
+            -DCMAKE_OSX_DEPLOYMENT_TARGET=8 \
+            -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY \
+            ..
 
       - name: Build
         run: cmake --build . --parallel -- -sdk iphonesimulator
