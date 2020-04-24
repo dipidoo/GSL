@@ -44,7 +44,7 @@ jobs:
     - name: Deploy tests
       run: |
         adb push tests /data/local/tmp
-        adb shell find /data/local/tmp/tests -depth 1 -exec chmod +x {} \;
+        adb shell find /data/local/tmp/tests -maxdepth 1 -exec chmod +x {} \;
 
     - name: Test
-      run: adb shell find /data/local/tmp/tests -depth 1 -exec {} \;
+      run: adb shell find /data/local/tmp/tests -name "*_tests" -maxdepth 1 -exec {} \;
