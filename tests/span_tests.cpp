@@ -118,21 +118,21 @@ TEST(span_test, from_nullptr_size_constructor)
         auto workaround_macro = []() {
             const span<int, 1> s{nullptr, narrow_cast<span<int>::size_type>(0)};
         };
-        EXPECT_DEATH_IF_SUPPORTED(workaround_macro(), deathstring);
+        EXPECT_DEATH(workaround_macro(), deathstring);
     }
     {
         auto workaround_macro = []() { const span<int> s{nullptr, 1}; };
-        EXPECT_DEATH_IF_SUPPORTED(workaround_macro(), deathstring);
+        EXPECT_DEATH(workaround_macro(), deathstring);
 
         auto const_workaround_macro = []() { const span<const int> s{nullptr, 1}; };
-        EXPECT_DEATH_IF_SUPPORTED(const_workaround_macro(), deathstring);
+        EXPECT_DEATH(const_workaround_macro(), deathstring);
     }
     {
         auto workaround_macro = []() { const span<int, 0> s{nullptr, 1}; };
-        EXPECT_DEATH_IF_SUPPORTED(workaround_macro(), deathstring);
+        EXPECT_DEATH(workaround_macro(), deathstring);
 
         auto const_workaround_macro = []() { const span<const int, 0> s{nullptr, 1}; };
-        EXPECT_DEATH_IF_SUPPORTED(const_workaround_macro(), deathstring);
+        EXPECT_DEATH(const_workaround_macro(), deathstring);
     }
     {
         span<int*> s{nullptr, narrow_cast<span<int>::size_type>(0)};
@@ -194,7 +194,7 @@ TEST(span_test, from_pointer_length_constructor)
     {
         int* p = nullptr;
         auto workaround_macro = [=]() { const span<int> s{p, 2}; };
-        EXPECT_DEATH_IF_SUPPORTED(workaround_macro(), deathstring);
+        EXPECT_DEATH(workaround_macro(), deathstring);
     }
 }
 
@@ -232,14 +232,14 @@ TEST(span_test, from_pointer_pointer_construction)
     // this will fail the std::distance() precondition, which asserts on MSVC debug builds
     //{
     //    auto workaround_macro = [&]() { span<int> s{&arr[1], &arr[0]}; };
-    //    EXPECT_DEATH_IF_SUPPORTED(workaround_macro(), deathstring);
+    //    EXPECT_DEATH(workaround_macro(), deathstring);
     //}
 
     // this will fail the std::distance() precondition, which asserts on MSVC debug builds
     //{
     //    int* p = nullptr;
     //    auto workaround_macro = [&]() { span<int> s{&arr[0], p}; };
-    //    EXPECT_DEATH_IF_SUPPORTED(workaround_macro(), deathstring);
+    //    EXPECT_DEATH(workaround_macro(), deathstring);
     //}
 
     {
@@ -260,7 +260,7 @@ TEST(span_test, from_pointer_pointer_construction)
     //{
     //    int* p = nullptr;
     //    auto workaround_macro = [&]() { span<int> s{&arr[0], p}; };
-    //    EXPECT_DEATH_IF_SUPPORTED(workaround_macro(), deathstring);
+    //    EXPECT_DEATH(workaround_macro(), deathstring);
     //}
 }
 
@@ -721,7 +721,7 @@ TEST(span_test, from_array_constructor)
          EXPECT_TRUE(av.first<6>().size() == 6);
          EXPECT_TRUE(av.first<-1>().size() == -1);
  #endif
-         EXPECT_DEATH_IF_SUPPORTED(av.first(6).size(), deathstring);
+         EXPECT_DEATH(av.first(6).size(), deathstring);
      }
 
      {
@@ -762,7 +762,7 @@ TEST(span_test, from_array_constructor)
  #ifdef CONFIRM_COMPILATION_ERRORS
          EXPECT_TRUE(av.last<6>().size() == 6);
  #endif
-         EXPECT_DEATH_IF_SUPPORTED(av.last(6).size(), deathstring);
+         EXPECT_DEATH(av.last(6).size(), deathstring);
      }
 
      {
@@ -801,8 +801,8 @@ TEST(span_test, from_array_constructor)
          EXPECT_TRUE(decltype(av.subspan<0, 5>())::extent == 5);
          EXPECT_TRUE(av.subspan(0, 5).size() == 5);
 
-         EXPECT_DEATH_IF_SUPPORTED(av.subspan(0, 6).size(), deathstring);
-         EXPECT_DEATH_IF_SUPPORTED(av.subspan(1, 5).size(), deathstring);
+         EXPECT_DEATH(av.subspan(0, 6).size(), deathstring);
+         EXPECT_DEATH(av.subspan(1, 5).size(), deathstring);
      }
 
      {
@@ -811,7 +811,7 @@ TEST(span_test, from_array_constructor)
          EXPECT_TRUE(decltype(av.subspan<4, 0>())::extent == 0);
          EXPECT_TRUE(av.subspan(4, 0).size() == 0);
          EXPECT_TRUE(av.subspan(5, 0).size() == 0);
-         EXPECT_DEATH_IF_SUPPORTED(av.subspan(6, 0).size(), deathstring);
+         EXPECT_DEATH(av.subspan(6, 0).size(), deathstring);
      }
 
      {
@@ -825,13 +825,13 @@ TEST(span_test, from_array_constructor)
          EXPECT_TRUE((av.subspan<0, 0>().size()) == 0);
          EXPECT_TRUE(decltype(av.subspan<0, 0>())::extent == 0);
          EXPECT_TRUE(av.subspan(0, 0).size() == 0);
-         EXPECT_DEATH_IF_SUPPORTED((av.subspan<1, 0>().size()), deathstring);
+         EXPECT_DEATH((av.subspan<1, 0>().size()), deathstring);
      }
 
      {
          span<int> av;
          EXPECT_TRUE(av.subspan(0).size() == 0);
-         EXPECT_DEATH_IF_SUPPORTED(av.subspan(1).size(), deathstring);
+         EXPECT_DEATH(av.subspan(1).size(), deathstring);
      }
 
      {
@@ -840,7 +840,7 @@ TEST(span_test, from_array_constructor)
          EXPECT_TRUE(av.subspan(1).size() == 4);
          EXPECT_TRUE(av.subspan(4).size() == 1);
          EXPECT_TRUE(av.subspan(5).size() == 0);
-         EXPECT_DEATH_IF_SUPPORTED(av.subspan(6).size(), deathstring);
+         EXPECT_DEATH(av.subspan(6).size(), deathstring);
          const auto av2 = av.subspan(1);
          for (std::size_t i = 0; i < 4; ++i) EXPECT_TRUE(av2[i] == static_cast<int>(i) + 2);
      }
@@ -851,7 +851,7 @@ TEST(span_test, from_array_constructor)
          EXPECT_TRUE(av.subspan(1).size() == 4);
          EXPECT_TRUE(av.subspan(4).size() == 1);
          EXPECT_TRUE(av.subspan(5).size() == 0);
-         EXPECT_DEATH_IF_SUPPORTED(av.subspan(6).size(), deathstring);
+         EXPECT_DEATH(av.subspan(6).size(), deathstring);
          const auto av2 = av.subspan(1);
          for (std::size_t i = 0; i < 4; ++i) EXPECT_TRUE(av2[i] == static_cast<int>(i) + 2);
      }
@@ -907,11 +907,11 @@ TEST(span_test, from_array_constructor)
          span<int> s = a;
          span<int> s2 = b;
 #if (__cplusplus > 201402L)
-         EXPECT_DEATH_IF_SUPPORTED([[maybe_unused]] bool _ = (s.begin() == s2.begin()), deathstring);
-         EXPECT_DEATH_IF_SUPPORTED([[maybe_unused]] bool _ = (s.begin() <= s2.begin()), deathstring);
+         EXPECT_DEATH([[maybe_unused]] bool _ = (s.begin() == s2.begin()), deathstring);
+         EXPECT_DEATH([[maybe_unused]] bool _ = (s.begin() <= s2.begin()), deathstring);
 #else
-         EXPECT_DEATH_IF_SUPPORTED(bool _ = (s.begin() == s2.begin()), deathstring);
-         EXPECT_DEATH_IF_SUPPORTED(bool _ = (s.begin() <= s2.begin()), deathstring);
+         EXPECT_DEATH(bool _ = (s.begin() == s2.begin()), deathstring);
+         EXPECT_DEATH(bool _ = (s.begin() <= s2.begin()), deathstring);
 #endif
      }
  }
@@ -946,7 +946,7 @@ TEST(span_test, from_array_constructor)
 
          auto beyond = s.end();
          EXPECT_TRUE(it != beyond);
-         EXPECT_DEATH_IF_SUPPORTED(*beyond, deathstring);
+         EXPECT_DEATH(*beyond, deathstring);
 
          EXPECT_TRUE(beyond - first == 4);
          EXPECT_TRUE(first - first == 0);
@@ -992,9 +992,9 @@ TEST(span_test, from_array_constructor)
          auto beyond = s.rend();
          EXPECT_TRUE(it != beyond);
 #if (__cplusplus > 201402L)
-        EXPECT_DEATH_IF_SUPPORTED([[maybe_unused]] auto _ = *beyond , deathstring);
+        EXPECT_DEATH([[maybe_unused]] auto _ = *beyond , deathstring);
 #else
-        EXPECT_DEATH_IF_SUPPORTED(auto _ = *beyond , deathstring);
+        EXPECT_DEATH(auto _ = *beyond , deathstring);
 #endif
 
          EXPECT_TRUE(beyond - first == 4);
@@ -1059,7 +1059,7 @@ TEST(span_test, from_array_constructor)
      int b[5] = {1, 2, 3, 4, 5};
      {
          span<int> sp(begin(b), static_cast<size_t>(-2));
-         EXPECT_DEATH_IF_SUPPORTED((void) sp.size_bytes(), deathstring);
+         EXPECT_DEATH((void) sp.size_bytes(), deathstring);
      }
  }
 
@@ -1136,7 +1136,7 @@ TEST(span_test, from_array_constructor)
              const span<int, 2> s2 = s;
              static_cast<void>(s2);
          };
-         EXPECT_DEATH_IF_SUPPORTED(f(), deathstring);
+         EXPECT_DEATH(f(), deathstring);
          */
      }
 
@@ -1183,7 +1183,7 @@ TEST(span_test, from_array_constructor)
              const span<int, 4> _s4 = {arr2, 2};
              static_cast<void>(_s4);
          };
-         EXPECT_DEATH_IF_SUPPORTED(f(), deathstring);
+         EXPECT_DEATH(f(), deathstring);
      }
 
     /*
@@ -1193,7 +1193,7 @@ TEST(span_test, from_array_constructor)
          const span<int, 4> _s4 = av;
          static_cast<void>(_s4);
      };
-     EXPECT_DEATH_IF_SUPPORTED(f(), deathstring);
+     EXPECT_DEATH(f(), deathstring);
      */
  }
 
@@ -1239,6 +1239,6 @@ TEST(span_test, from_array_constructor)
         std::abort();
     });
     span<int> s2;
-    EXPECT_DEATH_IF_SUPPORTED(s2.front(), deathstring);
-    EXPECT_DEATH_IF_SUPPORTED(s2.back(), deathstring);
+    EXPECT_DEATH(s2.front(), deathstring);
+    EXPECT_DEATH(s2.back(), deathstring);
  }

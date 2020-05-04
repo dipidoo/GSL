@@ -161,7 +161,7 @@ TEST(strict_notnull_tests, TestStrictNotNullConstructorTypeDeduction)
             int* p1 = nullptr;
             const strict_not_null x{p1};
         };
-        EXPECT_DEATH_IF_SUPPORTED(workaround_macro(), deathstring);
+        EXPECT_DEATH(workaround_macro(), deathstring);
     }
 
     {
@@ -169,14 +169,14 @@ TEST(strict_notnull_tests, TestStrictNotNullConstructorTypeDeduction)
             const int* p1 = nullptr;
             const strict_not_null x{p1};
         };
-        EXPECT_DEATH_IF_SUPPORTED(workaround_macro(), deathstring);
+        EXPECT_DEATH(workaround_macro(), deathstring);
     }
 
     {
         int* p = nullptr;
 
-        EXPECT_DEATH_IF_SUPPORTED(helper(strict_not_null{p}), deathstring);
-        EXPECT_DEATH_IF_SUPPORTED(helper_const(strict_not_null{p}), deathstring);
+        EXPECT_DEATH(helper(strict_not_null{p}), deathstring);
+        EXPECT_DEATH(helper_const(strict_not_null{p}), deathstring);
     }
 
 #ifdef CONFIRM_COMPILATION_ERRORS

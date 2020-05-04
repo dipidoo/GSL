@@ -43,10 +43,10 @@ TEST(at_tests, static_array)
         std::abort();
     });
 
-    EXPECT_DEATH_IF_SUPPORTED(gsl::at(a, -1), deathstring);
-    EXPECT_DEATH_IF_SUPPORTED(gsl::at(a, 4), deathstring);
-    EXPECT_DEATH_IF_SUPPORTED(gsl::at(c_a, -1), deathstring);
-    EXPECT_DEATH_IF_SUPPORTED(gsl::at(c_a, 4), deathstring);
+    EXPECT_DEATH(gsl::at(a, -1), deathstring);
+    EXPECT_DEATH(gsl::at(a, 4), deathstring);
+    EXPECT_DEATH(gsl::at(c_a, -1), deathstring);
+    EXPECT_DEATH(gsl::at(c_a, 4), deathstring);
 }
 
 TEST(at_tests, std_array)
@@ -64,10 +64,10 @@ TEST(at_tests, std_array)
         std::abort();
     });
 
-    EXPECT_DEATH_IF_SUPPORTED(gsl::at(a, -1), deathstring);
-    EXPECT_DEATH_IF_SUPPORTED(gsl::at(a, 4), deathstring);
-    EXPECT_DEATH_IF_SUPPORTED(gsl::at(c_a, -1), deathstring);
-    EXPECT_DEATH_IF_SUPPORTED(gsl::at(c_a, 4), deathstring);
+    EXPECT_DEATH(gsl::at(a, -1), deathstring);
+    EXPECT_DEATH(gsl::at(a, 4), deathstring);
+    EXPECT_DEATH(gsl::at(c_a, -1), deathstring);
+    EXPECT_DEATH(gsl::at(c_a, 4), deathstring);
 }
 
 TEST(at_tests, std_vector)
@@ -85,10 +85,10 @@ TEST(at_tests, std_vector)
         std::abort();
     });
 
-    EXPECT_DEATH_IF_SUPPORTED(gsl::at(a, -1), deathstring);
-    EXPECT_DEATH_IF_SUPPORTED(gsl::at(a, 4), deathstring);
-    EXPECT_DEATH_IF_SUPPORTED(gsl::at(c_a, -1), deathstring);
-    EXPECT_DEATH_IF_SUPPORTED(gsl::at(c_a, 4), deathstring);
+    EXPECT_DEATH(gsl::at(a, -1), deathstring);
+    EXPECT_DEATH(gsl::at(a, 4), deathstring);
+    EXPECT_DEATH(gsl::at(c_a, -1), deathstring);
+    EXPECT_DEATH(gsl::at(c_a, 4), deathstring);
 }
 
 TEST(at_tests, InitializerList)
@@ -105,10 +105,10 @@ TEST(at_tests, InitializerList)
         std::abort();
     });
 
-    EXPECT_DEATH_IF_SUPPORTED(gsl::at(a, -1), deathstring);
-    EXPECT_DEATH_IF_SUPPORTED(gsl::at(a, 4), deathstring);
-    EXPECT_DEATH_IF_SUPPORTED(gsl::at({1, 2, 3, 4}, -1), deathstring);
-    EXPECT_DEATH_IF_SUPPORTED(gsl::at({1, 2, 3, 4}, 4), deathstring);
+    EXPECT_DEATH(gsl::at(a, -1), deathstring);
+    EXPECT_DEATH(gsl::at(a, 4), deathstring);
+    EXPECT_DEATH(gsl::at({1, 2, 3, 4}, -1), deathstring);
+    EXPECT_DEATH(gsl::at({1, 2, 3, 4}, 4), deathstring);
 }
 
 #if !defined(_MSC_VER) || defined(__clang__) || _MSC_VER >= 1910

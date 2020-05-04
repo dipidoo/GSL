@@ -973,7 +973,7 @@ TEST(string_span_tests, zstring)
         buf[0] = 'a';
 
         auto workaround_macro = [&]() { const zstring_span<> zspan({buf, 1}); };
-        EXPECT_DEATH_IF_SUPPORTED(workaround_macro(), deathstring);
+        EXPECT_DEATH(workaround_macro(), deathstring);
     }
 
     // usage scenario: create zero-terminated temp file name and pass to a legacy API
@@ -1014,7 +1014,7 @@ TEST(string_span_tests, wzstring)
         buf[0] = L'a';
 
         const auto workaround_macro = [&]() { const wzstring_span<> zspan({buf, 1}); };
-        EXPECT_DEATH_IF_SUPPORTED(workaround_macro(), deathstring);
+        EXPECT_DEATH(workaround_macro(), deathstring);
     }
 
     // usage scenario: create zero-terminated temp file name and pass to a legacy API
@@ -1055,7 +1055,7 @@ TEST(string_span_tests, u16zstring)
         buf[0] = u'a';
 
         const auto workaround_macro = [&]() { const u16zstring_span<> zspan({buf, 1}); };
-        EXPECT_DEATH_IF_SUPPORTED(workaround_macro(), deathstring);
+        EXPECT_DEATH(workaround_macro(), deathstring);
     }
 
     // usage scenario: create zero-terminated temp file name and pass to a legacy API
@@ -1096,7 +1096,7 @@ TEST(string_span_tests, u32zstring)
         buf[0] = u'a';
 
         const auto workaround_macro = [&]() { const u32zstring_span<> zspan({buf, 1}); };
-        EXPECT_DEATH_IF_SUPPORTED(workaround_macro(), deathstring);
+        EXPECT_DEATH(workaround_macro(), deathstring);
     }
 
     // usage scenario: create zero-terminated temp file name and pass to a legacy API

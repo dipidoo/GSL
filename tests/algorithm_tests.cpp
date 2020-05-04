@@ -217,9 +217,9 @@ TEST(algorithm_tests, small_destination_span)
     const span<int> dst_span_dyn(dst);
     const span<int, 4> dst_span_static(dst);
 
-    EXPECT_DEATH_IF_SUPPORTED(copy(src_span_dyn, dst_span_dyn), deathstring);
-    EXPECT_DEATH_IF_SUPPORTED(copy(src_span_dyn, dst_span_static), deathstring);
-    EXPECT_DEATH_IF_SUPPORTED(copy(src_span_static, dst_span_dyn), deathstring);
+    EXPECT_DEATH(copy(src_span_dyn, dst_span_dyn), deathstring);
+    EXPECT_DEATH(copy(src_span_dyn, dst_span_static), deathstring);
+    EXPECT_DEATH(copy(src_span_static, dst_span_dyn), deathstring);
 
 #ifdef CONFIRM_COMPILATION_ERRORS
     copy(src_span_static, dst_span_static);

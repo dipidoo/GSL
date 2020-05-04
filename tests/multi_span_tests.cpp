@@ -240,18 +240,18 @@ TEST(multi_span_test, from_nullptr_length_constructor) {
 
     {
         auto workaround_macro = []() { const multi_span<int> s{nullptr, 1}; };
-        EXPECT_DEATH_IF_SUPPORTED(workaround_macro(), deathstring);
+        EXPECT_DEATH(workaround_macro(), deathstring);
 
         auto const_workaround_macro = []() { const multi_span<const int> cs{nullptr, 1}; };
-        EXPECT_DEATH_IF_SUPPORTED(const_workaround_macro(), deathstring);
+        EXPECT_DEATH(const_workaround_macro(), deathstring);
     }
 
     {
         auto workaround_macro = []() { const multi_span<int, 0> s{nullptr, 1}; };
-        EXPECT_DEATH_IF_SUPPORTED(workaround_macro(), deathstring);
+        EXPECT_DEATH(workaround_macro(), deathstring);
 
         auto const_workaround_macro = []() { const multi_span<const int, 0> s{nullptr, 1}; };
-        EXPECT_DEATH_IF_SUPPORTED(const_workaround_macro(), deathstring);
+        EXPECT_DEATH(const_workaround_macro(), deathstring);
     }
 
     {
@@ -363,7 +363,7 @@ TEST(multi_span_test, from_pointer_length_constructor)
     {
         int* p = nullptr;
         auto workaround_macro = [=]() { const multi_span<int> s{p, 2}; };
-        EXPECT_DEATH_IF_SUPPORTED(workaround_macro(), deathstring);
+        EXPECT_DEATH(workaround_macro(), deathstring);
     }
 }
 
@@ -407,25 +407,25 @@ TEST(multi_span_test, from_pointer_pointer_constructor)
 
     {
         auto workaround_macro = [&]() { const multi_span<int> s{&arr[1], &arr[0]}; };
-        EXPECT_DEATH_IF_SUPPORTED(workaround_macro(), deathstring);
+        EXPECT_DEATH(workaround_macro(), deathstring);
     }
 
     {
         int* p = nullptr;
         auto workaround_macro = [&]() { const multi_span<int> s{&arr[0], p}; };
-        EXPECT_DEATH_IF_SUPPORTED(workaround_macro(), deathstring);
+        EXPECT_DEATH(workaround_macro(), deathstring);
     }
 
     {
         int* p = nullptr;
         auto workaround_macro = [&]() { const multi_span<int> s{p, p}; };
-        EXPECT_DEATH_IF_SUPPORTED(workaround_macro(), deathstring);
+        EXPECT_DEATH(workaround_macro(), deathstring);
     }
 
     {
         int* p = nullptr;
         auto workaround_macro = [&]() { const multi_span<int> s{&arr[0], p}; };
-        EXPECT_DEATH_IF_SUPPORTED(workaround_macro(), deathstring);
+        EXPECT_DEATH(workaround_macro(), deathstring);
     }
 }
 
@@ -583,7 +583,7 @@ TEST(multi_span_test, from_dynamic_array_constructor)
         multi_span<double, dynamic_range, 3, 4> s(arr, 10);
         EXPECT_TRUE(s.length() ==  120);
         EXPECT_TRUE(s.data() == &arr[0][0][0]);
-        EXPECT_DEATH_IF_SUPPORTED(s[10][3][4], deathstring);
+        EXPECT_DEATH(s[10][3][4], deathstring);
     }
 
     {
@@ -816,7 +816,7 @@ TEST(multi_span_test, from_convertible_span_constructor)
     });
 
     auto f = [&]() { multi_span<int, 7, 4, 2> av1(nullptr); };
-    EXPECT_DEATH_IF_SUPPORTED(f(), deathstring);
+    EXPECT_DEATH(f(), deathstring);
 #endif
 
 #ifdef CONFIRM_COMPILATION_ERRORS
@@ -922,7 +922,7 @@ TEST(multi_span_test, first)
             std::abort();
         });
 
-        EXPECT_DEATH_IF_SUPPORTED(av.first(6).length(), deathstring);
+        EXPECT_DEATH(av.first(6).length(), deathstring);
     }
 
     {
@@ -970,7 +970,7 @@ TEST(multi_span_test, last)
             std::abort();
         });
 
-        EXPECT_DEATH_IF_SUPPORTED(av.last(6).length(), deathstring);
+        EXPECT_DEATH(av.last(6).length(), deathstring);
     }
 
     {
@@ -1010,8 +1010,8 @@ TEST(multi_span_test, subspan)
         EXPECT_TRUE((av.subspan<0, 5>().bounds()) == static_bounds<5>());
         EXPECT_TRUE((av.subspan<0, 5>().length()) == 5);
         EXPECT_TRUE(av.subspan(0, 5).length() == 5);
-        EXPECT_DEATH_IF_SUPPORTED(av.subspan(0, 6).length(), deathstring);
-        EXPECT_DEATH_IF_SUPPORTED(av.subspan(1, 5).length(), deathstring);
+        EXPECT_DEATH(av.subspan(0, 6).length(), deathstring);
+        EXPECT_DEATH(av.subspan(1, 5).length(), deathstring);
     }
 
     {
@@ -1019,7 +1019,7 @@ TEST(multi_span_test, subspan)
         EXPECT_TRUE((av.subspan<5, 0>().bounds()) == static_bounds<0>());
         EXPECT_TRUE((av.subspan<5, 0>().length()) == 0);
         EXPECT_TRUE(av.subspan(5, 0).length() == 0);
-        EXPECT_DEATH_IF_SUPPORTED(av.subspan(6, 0).length(), deathstring);
+        EXPECT_DEATH(av.subspan(6, 0).length(), deathstring);
     }
 
     {
@@ -1027,13 +1027,13 @@ TEST(multi_span_test, subspan)
         EXPECT_TRUE((av.subspan<0, 0>().bounds()) == static_bounds<0>());
         EXPECT_TRUE((av.subspan<0, 0>().length()) == 0);
         EXPECT_TRUE(av.subspan(0, 0).length() == 0);
-        EXPECT_DEATH_IF_SUPPORTED((av.subspan<1, 0>().length()), deathstring);
+        EXPECT_DEATH((av.subspan<1, 0>().length()), deathstring);
     }
 
     {
         multi_span<int> av;
         EXPECT_TRUE(av.subspan(0).length() == 0);
-        EXPECT_DEATH_IF_SUPPORTED(av.subspan(1).length(), deathstring);
+        EXPECT_DEATH(av.subspan(1).length(), deathstring);
     }
 
     {
@@ -1044,7 +1044,7 @@ TEST(multi_span_test, subspan)
         EXPECT_TRUE(av.subspan(5).length() == 0);
         // Disabled test instead of fixing since multi_span is deprecated. (PR#835)
 #if !(defined(__GNUC__) && __GNUC__ == 8)
-        EXPECT_DEATH_IF_SUPPORTED(av.subspan(6).length(), deathstring);
+        EXPECT_DEATH(av.subspan(6).length(), deathstring);
 #endif
         auto av2 = av.subspan(1);
         for (int i = 0; i < 4; ++i) EXPECT_TRUE(av2[i] == i + 2);
@@ -1056,7 +1056,7 @@ TEST(multi_span_test, subspan)
         EXPECT_TRUE(av.subspan(1).length() == 4);
         EXPECT_TRUE(av.subspan(4).length() == 1);
         EXPECT_TRUE(av.subspan(5).length() == 0);
-        EXPECT_DEATH_IF_SUPPORTED(av.subspan(6).length(), deathstring);
+        EXPECT_DEATH(av.subspan(6).length(), deathstring);
         auto av2 = av.subspan(1);
         for (int i = 0; i < 4; ++i) EXPECT_TRUE(av2[i] == i + 2);
     }
@@ -1094,7 +1094,7 @@ TEST(multi_span_test, extent)
         multi_span<int> s;
         EXPECT_TRUE(s.extent() == 0);
         EXPECT_TRUE(s.extent(0) == 0);
-        EXPECT_DEATH_IF_SUPPORTED(s.extent(1), deathstring);
+        EXPECT_DEATH(s.extent(1), deathstring);
 #ifdef CONFIRM_COMPILATION_ERRORS
         EXPECT_TRUE(s.extent<1>() == 0);
 #endif
@@ -1104,7 +1104,7 @@ TEST(multi_span_test, extent)
         multi_span<int, 0> s;
         EXPECT_TRUE(s.extent() == 0);
         EXPECT_TRUE(s.extent(0) == 0);
-        EXPECT_DEATH_IF_SUPPORTED(s.extent(1), deathstring);
+        EXPECT_DEATH(s.extent(1), deathstring);
     }
 
     {
@@ -1116,7 +1116,7 @@ TEST(multi_span_test, extent)
         EXPECT_TRUE(s.extent<1>() == 2);
         EXPECT_TRUE(s.extent(0) == 1);
         EXPECT_TRUE(s.extent(1) == 2);
-        EXPECT_DEATH_IF_SUPPORTED(s.extent(3), deathstring);
+        EXPECT_DEATH(s.extent(3), deathstring);
     }
 
     {
@@ -1128,7 +1128,7 @@ TEST(multi_span_test, extent)
         EXPECT_TRUE(s.extent<1>() == 2);
         EXPECT_TRUE(s.extent(0) == 0);
         EXPECT_TRUE(s.extent(1) == 2);
-        EXPECT_DEATH_IF_SUPPORTED(s.extent(3), deathstring);
+        EXPECT_DEATH(s.extent(3), deathstring);
     }
 }
 
@@ -1144,7 +1144,7 @@ TEST(multi_span_test, operator_function_call)
     {
         multi_span<int> s = arr;
         EXPECT_TRUE(s(0) == 1);
-        EXPECT_DEATH_IF_SUPPORTED(s(5), deathstring);
+        EXPECT_DEATH(s(5), deathstring);
     }
 
     int arr2d[2][3] = {1, 2, 3, 4, 5, 6};
@@ -1303,17 +1303,17 @@ TEST(multi_span_test, bounds_checks)
     });
 
     // out of bounds
-    EXPECT_DEATH_IF_SUPPORTED(av[1][3] = 3, deathstring);
-    EXPECT_DEATH_IF_SUPPORTED((av[{1, 3}] = 3), deathstring);
+    EXPECT_DEATH(av[1][3] = 3, deathstring);
+    EXPECT_DEATH((av[{1, 3}] = 3), deathstring);
 
-    EXPECT_DEATH_IF_SUPPORTED(av[10][2], deathstring);
-    EXPECT_DEATH_IF_SUPPORTED((av[{10, 2}]), deathstring);
+    EXPECT_DEATH(av[10][2], deathstring);
+    EXPECT_DEATH((av[{10, 2}]), deathstring);
 
-    EXPECT_DEATH_IF_SUPPORTED(av[-1][0], deathstring);
-    EXPECT_DEATH_IF_SUPPORTED((av[{-1, 0}]), deathstring);
+    EXPECT_DEATH(av[-1][0], deathstring);
+    EXPECT_DEATH((av[{-1, 0}]), deathstring);
 
-    EXPECT_DEATH_IF_SUPPORTED(av[0][-1], deathstring);
-    EXPECT_DEATH_IF_SUPPORTED((av[{0, -1}]), deathstring);
+    EXPECT_DEATH(av[0][-1], deathstring);
+    EXPECT_DEATH((av[{0, -1}]), deathstring);
 }
 
 TEST(multi_span_test, span_parameter_test)
@@ -1440,9 +1440,9 @@ TEST(multi_span_test, empty_spans)
         multi_span<int, 0> empty_av(nullptr);
 
         EXPECT_TRUE(empty_av.bounds().index_bounds() == multi_span_index<1>{0});
-        EXPECT_DEATH_IF_SUPPORTED(empty_av[0], deathstring);
-        EXPECT_DEATH_IF_SUPPORTED(empty_av.begin()[0], deathstring);
-        EXPECT_DEATH_IF_SUPPORTED(empty_av.cbegin()[0], deathstring);
+        EXPECT_DEATH(empty_av[0], deathstring);
+        EXPECT_DEATH(empty_av.begin()[0], deathstring);
+        EXPECT_DEATH(empty_av.cbegin()[0], deathstring);
         for (auto& v : empty_av)
         {
             (void) v;
@@ -1453,9 +1453,9 @@ TEST(multi_span_test, empty_spans)
     {
         multi_span<int> empty_av = {};
         EXPECT_TRUE(empty_av.bounds().index_bounds() == multi_span_index<1>{0});
-        EXPECT_DEATH_IF_SUPPORTED(empty_av[0], deathstring);
-        EXPECT_DEATH_IF_SUPPORTED(empty_av.begin()[0], deathstring);
-        EXPECT_DEATH_IF_SUPPORTED(empty_av.cbegin()[0], deathstring);
+        EXPECT_DEATH(empty_av[0], deathstring);
+        EXPECT_DEATH(empty_av.begin()[0], deathstring);
+        EXPECT_DEATH(empty_av.cbegin()[0], deathstring);
         for (auto& v : empty_av)
         {
             (void) v;
@@ -1690,7 +1690,7 @@ TEST(multi_span_test, span_structure_size)
         std::abort();
     });
 
-    EXPECT_DEATH_IF_SUPPORTED(av1[10][3][4], deathstring);
+    EXPECT_DEATH(av1[10][3][4], deathstring);
 
     multi_span<const double, dynamic_range, 6, 4> av2 =
         as_multi_span(av1, dim(5), dim<6>(), dim<4>());
@@ -1789,7 +1789,7 @@ TEST(multi_span_test, fixed_size_conversions)
             const multi_span<int, 4> av9 = {arr2, 2};
             (void) av9;
         };
-        EXPECT_DEATH_IF_SUPPORTED(f(), deathstring);
+        EXPECT_DEATH(f(), deathstring);
     }
 
     // this should fail - we are trying to assign a small dynamic a_v to a fixed_size larger one
@@ -1798,7 +1798,7 @@ TEST(multi_span_test, fixed_size_conversions)
         const multi_span<int, 4> av2 = av;
         (void) av2;
     };
-    EXPECT_DEATH_IF_SUPPORTED(f(), deathstring);
+    EXPECT_DEATH(f(), deathstring);
 }
 
 TEST(multi_span_test, as_writeable_bytes)

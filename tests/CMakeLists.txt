@@ -72,7 +72,7 @@ if(MSVC) # MSVC or simulating MSVC
           -Wno-missing-prototypes
           -Wno-shift-sign-overflow # GTest gtest-port.h
           -Wno-undef # GTest
-          -Wno-used-but-marked-unused # GTest EXPECT_DEATH_IF_SUPPORTED
+          -Wno-used-but-marked-unused # GTest EXPECT_DEATH
           $<$<EQUAL:${GSL_CXX_STANDARD},14>: # no support for [[maybe_unused]]
             -Wno-unused-member-function
             -Wno-unused-variable
@@ -102,7 +102,7 @@ else()
           -Wno-missing-prototypes
           -Wno-padded
           -Wno-unknown-attributes
-          -Wno-used-but-marked-unused # GTest EXPECT_DEATH_IF_SUPPORTED
+          -Wno-used-but-marked-unused # GTest EXPECT_DEATH
           -Wno-weak-vtables
           $<$<EQUAL:${GSL_CXX_STANDARD},14>: # no support for [[maybe_unused]]
             -Wno-unused-member-function

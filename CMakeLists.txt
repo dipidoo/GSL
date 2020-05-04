@@ -98,6 +98,11 @@ add_library(Microsoft.GSL::GSL ALIAS GSL)
 
 option(GSL_TEST "Generate tests." ${GSL_STANDALONE_PROJECT})
 if (GSL_TEST)
-	enable_testing()
-	add_subdirectory(tests)
+    enable_testing()
+    if(IOS)
+        add_compile_definitions(
+            GTEST_HAS_DEATH_TEST=1
+        )
+    endif()
+    add_subdirectory(tests)
 endif ()

@@ -45,7 +45,7 @@ TEST(assertion_tests, expects)
     });
 
     EXPECT_TRUE(f(2) == 2);
-    EXPECT_DEATH_IF_SUPPORTED(f(10), deathstring);
+    EXPECT_DEATH(f(10), deathstring);
 }
 
 
@@ -57,5 +57,5 @@ TEST(assertion_tests, ensures)
     });
 
     EXPECT_TRUE(g(2) == 3);
-    EXPECT_DEATH_IF_SUPPORTED(g(9), deathstring);
+    EXPECT_DEATH(g(9), deathstring);
 }
