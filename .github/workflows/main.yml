@@ -26,10 +26,27 @@ jobs:
             "-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64" \
             -DCMAKE_OSX_DEPLOYMENT_TARGET=8 \
             -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY \
+            "-DMACOSX_BUNDLE_GUI_IDENTIFIER=GSL.\$(EXECUTABLE_NAME)" \
+            -DMACOSX_BUNDLE_BUNDLE_VERSION=3.0.1 \
+            -DMACOSX_BUNDLE_SHORT_VERSION_STRING=3.0.1 \
             ..
 
       - name: Build
-        run: cmake --build . --parallel `sysctl -n hw.ncpu` -- -sdk iphonesimulator
+        run: cmake --build . --parallel `sysctl -n hw.ncpu` --config Release -- -sdk iphonesimulator
+
+      - name: Test
+        run: |
+          RUNTIME=`xcrun simctl list runtimes iOS -j|jq '.runtimes|last.identifier'`
+          UDID=`xcrun simctl list devices iPhone available -j|jq -r ".devices[$RUNTIME]|last.udid"`
+          xcrun simctl bootstatus $UDID -b
+          for TEST in `find tests/Release-iphonesimulator -depth 1 -name "*.app"`
+          do
+            xcrun simctl install $UDID $TEST
+            TEST_ID=`plutil -convert json -o - $TEST/Info.plist|jq -r ".CFBundleIdentifier"`
+            xcrun simctl launch --console $UDID $TEST_ID
+            xcrun simctl uninstall $UDID $TEST_ID
+          done
+          xcrun simctl shutdown $UDID
 
   Android:
     runs-on: macos-latest
