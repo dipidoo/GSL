@@ -57,7 +57,7 @@ TEST(span_ext_test, make_span_from_pointer_length_constructor)
     {
         int* p = nullptr;
         auto workaround_macro = [=]() { make_span(p, 2); };
-        EXPECT_DEATH(workaround_macro(), deathstring);
+        EXPECT_DEATH_IF_SUPPORTED(workaround_macro(), deathstring);
     }
 }
 

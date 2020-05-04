@@ -89,7 +89,7 @@ TEST(bounds_tests, bounds_convertible)
     });
 
     b5 = static_bounds<20>();
-    EXPECT_DEATH(b6 = b5, ".*");
+    EXPECT_DEATH_IF_SUPPORTED(b6 = b5, ".*");
     b5 = static_bounds<34>();
     b6 = b5;
 
