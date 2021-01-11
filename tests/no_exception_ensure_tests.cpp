@@ -44,5 +44,5 @@ int main() noexcept
 {
     setup_termination_handler();
     operator_subscript_no_throw();
-    return -1;
+    return 0;
 }
